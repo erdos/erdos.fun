@@ -1,11 +1,13 @@
 (ns erdos.fun.walk)
 
 
-(defn quote? [x]
-  (and (seq? x) (= (first x) 'quote)))
+(defn quote?
+  "Returns true iff argument is a quoted form."
+  [x] (and (seq? x) (= (first x) 'quote)))
 
 
 (defn scalar?
+  "Returns if argument is not a composite value."
   [xs]
   (cond
    (string? xs)  true
@@ -18,8 +20,8 @@
    (instance? java.util.regex.Pattern xs) true
    :else false))
 
-
 (defn data-coll?
+  "Returns true iff argument is collection but not seq"
   [xs]
   (and (coll? xs) (not (seq? xs))))
 
@@ -40,7 +42,9 @@
      :else        false)))
 
 
-(defn data? [xs]
+(defn data?
+  "Returns true if argument evaluates to itself"
+  [xs]
   (cond
    (seq? xs)  (if (= 'quote (first xs)) true false)
    (coll? xs) (data?-walker (seq xs))
@@ -48,7 +52,7 @@
 
 
 (defn code-seq
-  "Returns a lazy seq of code itms in expression."
+  "Returns a lazy seq of code itms in expression"
   [root]
   (tree-seq
    (fn [x] (and (coll? x)
@@ -61,6 +65,7 @@
 
 
 (defn code-seq-calls
+  "Returns all function/macro calls from given expression"
   [root] (filter seq? (code-seq root)))
 
 
@@ -81,6 +86,7 @@
      with-redefs})
 
 (def macro-whitelist-toplevel
+  "Set of top level macro expression names"
   '#{defn defn- defonce defmacro defprotocol})
 
 (def ^:dynamic *macro-whitelist*

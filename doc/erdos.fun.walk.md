@@ -10,17 +10,21 @@ __public vars:__
 
 _arguments:_ `[x]`
 
+Returns true iff argument is a quoted form.
+
 ## _dynamic_ **macro-whitelist** 
 
 ## _function_ *code-seq* 
 
 _arguments:_ `[root]`
 
-Returns a lazy seq of code itms in expression.
+Returns a lazy seq of code itms in expression
 
 ## _function_ *data?* 
 
 _arguments:_ `[xs]`
+
+Returns true if argument evaluates to itself
 
 ## _function_ *safe-macroexpand-1* 
 
@@ -42,6 +46,8 @@ See: safe-macroexpand
 
 _arguments:_ `[root]`
 
+Returns all function/macro calls from given expression
+
 ## _function_ *safe-macroexpand* 
 
 _arguments:_ `[form]`
@@ -51,12 +57,18 @@ Like clojure.core/macroexpand but does not expand
 
 ## _var_ *macro-whitelist-toplevel* 
 
+Set of top level macro expression names
+
 ## _function_ *data-coll?* 
 
 _arguments:_ `[xs]`
 
+Returns true iff argument is collection but not seq
+
 ## _function_ *scalar?* 
 
 _arguments:_ `[xs]`
+
+Returns if argument is not a composite value.
 
 
