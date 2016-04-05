@@ -6,59 +6,43 @@ __public vars:__
 
 ## _function_ *quote?* 
 
-_argument lists_
-
- - `[x]`
+_argument lists:_ `[x]`
 
 ## _dynamic_ **macro-whitelist** 
 
 ## _function_ *code-seq* 
 
-_argument lists_
-
- - `[root]`
+_argument lists:_ `[root]`
 
 Returns a lazy seq of code itms in expression.
 
 ## _function_ *data?* 
 
-_argument lists_
-
- - `[xs]`
+_argument lists:_ `[xs]`
 
 ## _function_ *safe-macroexpand-1* 
 
-_argument lists_
-
- - `[expr]`
+_argument lists:_ `[expr]`
 
 See: safe-macroexpand
 
 ## _function_ *code-seq-children* 
 
-_argument lists_
-
- - `[root]`
+_argument lists:_ `[root]`
 
 ## _function_ *safe-macroexpand-all* 
 
-_argument lists_
-
- - `[form]`
+_argument lists:_ `[form]`
 
 See: safe-macroexpand
 
 ## _function_ *code-seq-calls* 
 
-_argument lists_
-
- - `[root]`
+_argument lists:_ `[root]`
 
 ## _function_ *safe-macroexpand* 
 
-_argument lists_
-
- - `[form]`
+_argument lists:_ `[form]`
 
 Like clojure.core/macroexpand but does not expand
   quoted forms.
@@ -67,14 +51,10 @@ Like clojure.core/macroexpand but does not expand
 
 ## _function_ *data-coll?* 
 
-_argument lists_
-
- - `[xs]`
+_argument lists:_ `[xs]`
 
 ## _function_ *scalar?* 
 
-_argument lists_
-
- - `[xs]`
+_argument lists:_ `[xs]`
 
 
