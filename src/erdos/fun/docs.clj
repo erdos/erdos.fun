@@ -34,7 +34,7 @@
   (clojure.string/join ", " (filter some? (flatten args))))
 (defn link
   ([name id href] (format "[%s][%s](%s)" name id href))
-  ([name href] (format "[%s][%s]" name href)))
+  ([name href] (format "[%s](%s)" name href)))
 
 (defn list-namespaces
   "Get a list of project namespaces."
