@@ -97,7 +97,8 @@
   (let [ns (the-ns ns)
         pubs (vals (ns-publics ns))
         mets (mapv meta pubs)]
-    [(str "# namespace " (.getName ns))
+    [(link "Return to index" "index.md") ;; home
+     (str "# namespace " (.getName ns))
      ; (str "files: " (words (seq (set (map (comp :file meta) pubs)))))
      (str (-> ns meta :doc))
      (str "__public vars:__ ")
