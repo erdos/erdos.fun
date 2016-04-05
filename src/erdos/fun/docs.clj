@@ -1,37 +1,20 @@
 (ns erdos.fun.docs
   "Generating markdown documentation from source.")
 
+;; TODO: create boot/lein task to auto gen doc.
+
 (def project-dir
   (.getCanonicalPath
    (clojure.java.io/file ".")))
 
 (def output-dir (str project-dir "/" "doc"))
 
-(comment
-
-  (let []
-
-    )
-
-  (for [ns (all-ns)
-        :let [n (ns-name ns)]
-        :when (not (.startsWith (str n) "clojure."))]
-    n)
-
-  (ns-publics 'complete.core)
-  (println (keys (bean (the-ns *ns*))))
-
-  (-> *ns* the-ns bean :mappings)
-
-
-
-  )
-
 (defn lines [& args]
   (clojure.string/join "\n\n" (filter some? (flatten args))))
 
 (defn words [& args]
   (clojure.string/join ", " (filter some? (flatten args))))
+
 (defn link
   ([name id href] (format "[%s][%s](%s)" name id href))
   ([name href] (format "[%s](%s)" name href)))
@@ -150,3 +133,6 @@
 
 ;; (meta #'erdos.fun.docs/process)
 ;; (println (process))
+
+
+'OK

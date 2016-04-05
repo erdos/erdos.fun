@@ -4,7 +4,8 @@
 
 
 (def genkwd
-  "Like gensym but for keywords. Do not use within loops for keywords are memoized permanently."
+  "Like gensym but for keywords.
+  Take in mind that generated keywords are cached permanently."
   (comp keyword name gensym))
 
 
@@ -72,9 +73,16 @@
          (throw (new IllegalStateException "No clause matched."))))
 
 
-(defn comp< [& fs]
-  (comp (reverse fs)))
+(defn comp<
+  "Like `clojure.core/comp` with reverse argument list"
+  [& fs] (comp (reverse fs)))
 
+(defn partial<
+  "Like `clojure.core/partial` with partial application from the right.
+  EXAMPLES:
+  - `((partial - 2) 5) ; => -3`
+  - `((partial< - 2) 5) ; => 3`"
+  ([f & args] (fn [& args2] (apply f (concat args2 args)))))
 
 (comment
 
