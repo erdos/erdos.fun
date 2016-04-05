@@ -21,8 +21,8 @@
    You can use the given name or (recur) to create a
    recursive memoized function.
 
-   Usage: (fn-memo name [args..] body..)
-       or (fn-memo [args..] body..)"
+   Usage: `(fn-memo name [args..] body..)`
+       or `(fn-memo [args..] body..)`"
   [head & body]
   (let [name (if (symbol? head) head)
         args (if name (first body) head)

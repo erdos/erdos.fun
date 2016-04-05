@@ -68,8 +68,8 @@ Creates a memoized function that may be recursive.
    You can use the given name or (recur) to create a
    recursive memoized function.
 
-   Usage: (fn-memo name [args..] body..)
-       or (fn-memo [args..] body..)
+   Usage: `(fn-memo name [args..] body..)`
+       or `(fn-memo [args..] body..)`
 
 ## _macro_ *fn->>* 
 
