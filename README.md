@@ -1,4 +1,4 @@
-# erdos.fun
+<div align="center"><h1>erdos.fun</h1></div>
 
 A Clojure library of some common utility functions for a better workflow.
 
