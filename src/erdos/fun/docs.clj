@@ -63,7 +63,9 @@
 ;; (require ')
 ;; (find-ns 'erdos.fun-walk-test)
 
-(defn var->type [v]
+(defn var->type
+  "Returns a human readable string containing information on the type of argument."
+  [v]
   (let [vd (deref v)]
     (cond (-> v meta :macro) "macro"
           (fn? vd)   "function"
@@ -80,11 +82,13 @@
          :otherwise "var"
          )))
 
-(defn process-var [v]
+(defn process-var-lines
+;  "Creates a"
+  [v]
   [(format "## _%s_ *%s* " (var->type v) (-> v meta :name))
    (when-let [as (-> v meta :arglists)]
      (str
-      "_argument lists:_ "
+      "_arguments:_ "
       (words (for [a as] (str "`" a "`")))))
    (-> v meta :doc)])
 
@@ -97,7 +101,7 @@
      ; (str "files: " (words (seq (set (map (comp :file meta) pubs)))))
      (str (-> ns meta :doc))
      (str "__public vars:__ ")
-     (map process-var (vals (ns-publics ns)))
+     (map process-var-lines (vals (ns-publics ns)))
      \newline]))
 
 (defn process-ns [ns]
@@ -119,7 +123,13 @@
    ]
   )
 
-(defn process-index [bib]
+(defn process-index
+  "Returns a map containin info to build an index.md file.
+  Argument `bib`: seq of values returned from `process-ns`
+  Returning map keys:
+  - file: index file name
+  - lines: seq of lines to insert to file"
+  [bib]
   {:file "index.md"
    :lines (flatten (process-index-lines bib))})
 ;; (mapv meta (vals (ns-publics (the-ns 'erdos.fun))))

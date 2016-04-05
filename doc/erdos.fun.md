@@ -6,51 +6,51 @@ __public vars:__
 
 ## _macro_ *fncase* 
 
-_argument lists:_ `[& clauses]`
+_arguments:_ `[& clauses]`
 
 ## _macro_ *def-* 
 
-_argument lists:_ `[name & body]`
+_arguments:_ `[name & body]`
 
 ## _macro_ *defatom* 
 
-_argument lists:_ `[name]`, `[name val]`, `[name docs val]`
+_arguments:_ `[name]`, `[name val]`, `[name docs val]`
 
 ## _function_ *fixpt* 
 
-_argument lists:_ `[f x]`
+_arguments:_ `[f x]`
 
 Calls f(x), f(f(x)), ... until the same value is returned.
 
 ## _macro_ *fnx* 
 
-_argument lists:_ `[& body]`
+_arguments:_ `[& body]`
 
 Same as (fn [x] ...)
 
 ## _macro_ *cond!* 
 
-_argument lists:_ `[& clauses]`
+_arguments:_ `[& clauses]`
 
 Like clojure.core/cond but throws exception when no clause matched.
 
 ## _function_ *comp<* 
 
-_argument lists:_ `[& fs]`
+_arguments:_ `[& fs]`
 
 ## _macro_ *fnxy* 
 
-_argument lists:_ `[& body]`
+_arguments:_ `[& body]`
 
 Same as (fn [x y] ...)
 
 ## _macro_ *fn->* 
 
-_argument lists:_ `[& calls]`
+_arguments:_ `[& calls]`
 
 ## _macro_ *defatom=* 
 
-_argument lists:_ `[name expr]`
+_arguments:_ `[name expr]`
 
 Define a var as an atom. Reloads atom value when one of the dereffed atoms change. Beware not to make circular references.
 
@@ -60,7 +60,7 @@ Like gensym but for keywords. Do not use within loops for keywords are memoized 
 
 ## _macro_ *fn-memo* 
 
-_argument lists:_ `[head & body]`
+_arguments:_ `[head & body]`
 
 Creates a memoized function that may be recursive.
    You can use the given name or (recur) to create a
@@ -71,6 +71,6 @@ Creates a memoized function that may be recursive.
 
 ## _macro_ *fn->>* 
 
-_argument lists:_ `[& calls]`
+_arguments:_ `[& calls]`
 
 

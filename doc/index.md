@@ -8,7 +8,7 @@ __namespaces:__
 
 [erdos.fun.docs](erdos.fun.docs.md)
 
- process-index, process-var, output-dir, words, process, lines, process-ns-lines, process-ns, list-files, link, project-dir, process-index-lines, var->type, list-namespaces
+ process-index, process-var, output-dir, process-var-lines, words, process, lines, process-ns-lines, process-ns, list-files, link, project-dir, process-index-lines, var->type, list-namespaces
 
 [erdos.fun.walk](erdos.fun.walk.md)
 

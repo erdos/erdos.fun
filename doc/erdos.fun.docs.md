@@ -6,55 +6,67 @@ __public vars:__
 
 ## _function_ *process-index* 
 
-_argument lists:_ `[bib]`
+_arguments:_ `[bib]`
+
+Returns a map containin info to build an index.md file.
+  Argument `bib`: seq of values returned from `process-ns`
+  Returning map keys:
+  - file: index file name
+  - lines: seq of lines to insert to file
 
 ## _function_ *process-var* 
 
-_argument lists:_ `[v]`
+_arguments:_ `[v]`
 
 ## _string_ *output-dir* 
 
+## _function_ *process-var-lines* 
+
+_arguments:_ `[v]`
+
 ## _function_ *words* 
 
-_argument lists:_ `[& args]`
+_arguments:_ `[& args]`
 
 ## _function_ *process* 
 
-_argument lists:_ `[]`, `[root]`
+_arguments:_ `[]`, `[root]`
 
 ## _function_ *lines* 
 
-_argument lists:_ `[& args]`
+_arguments:_ `[& args]`
 
 ## _function_ *process-ns-lines* 
 
-_argument lists:_ `[ns]`
+_arguments:_ `[ns]`
 
 ## _function_ *process-ns* 
 
-_argument lists:_ `[ns]`
+_arguments:_ `[ns]`
 
 ## _function_ *list-files* 
 
-_argument lists:_ `[]`
+_arguments:_ `[]`
 
 ## _function_ *link* 
 
-_argument lists:_ `[name id href]`, `[name href]`
+_arguments:_ `[name id href]`, `[name href]`
 
 ## _string_ *project-dir* 
 
 ## _function_ *process-index-lines* 
 
-_argument lists:_ `[bib]`
+_arguments:_ `[bib]`
 
 ## _function_ *var->type* 
 
-_argument lists:_ `[v]`
+_arguments:_ `[v]`
+
+Returns a human readable string containing information on the type of argument.
 
 ## _function_ *list-namespaces* 
 
-_argument lists:_ `[dir]`, `[]`
+_arguments:_ `[dir]`, `[]`
 
 Get a list of project namespaces.
 
