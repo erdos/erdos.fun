@@ -1,4 +1,4 @@
-<p align="center"><img src="doc/logo.png" alt="erdos.fun logo"/></p>
+<div align="center"><img src="doc/logo.png" alt="erdos.fun logo"/></div>
 
 <div align="center"><h1>erdos.fun</h1></div>
 
