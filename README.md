@@ -1,10 +1,16 @@
 # erdos.fun
 
-A Clojure library of some common utility functions.
+A Clojure library of some common utility functions for a better workflow.
+
+Currently includes:
+
+ - `erdos.fun`: some functional programming helpers
+ - `erdos.fun.docs`: generates documentation from source code
+ - `erdos.fun.walk`: helps analyzing clj source code
 
 ## Documentation
 
-See `doc/index.md` for the documentation.
+Read the [erdos.fun documentation](doc/index.md) generated from the source code.
 
 ## License
 
