@@ -82,6 +82,10 @@
 
 (defn process-var [v]
   [(format "## _%s_ *%s* " (var->type v) (-> v meta :name))
+   (when-let [as (-> v meta :arglists)]
+     ["_argument lists_"
+      (for [a as]
+        (str " - `" a "`"))])
    (-> v meta :doc)])
 
 (defn process-ns-lines
@@ -132,4 +136,6 @@
      (spit (str output-dir "/" (:file ind))
            (lines (:lines ind)))
      :ok)))
+
+;; (meta #'erdos.fun.docs/process)
 ;; (println (process))
