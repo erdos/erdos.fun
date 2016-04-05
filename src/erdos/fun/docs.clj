@@ -64,13 +64,21 @@
 ;; (find-ns 'erdos.fun-walk-test)
 
 (defn var->type [v]
-  (cond (-> v meta :macro) "macro"
-        (-> v deref fn?)   "function"
-        (-> v meta :dynamic) "dynamic"
-        (-> v meta :test)    "test"
-        (-> v deref string?) "string"
-        :otherwise "var"
-        ))
+  (let [vd (deref v)]
+    (cond (-> v meta :macro) "macro"
+          (fn? vd)   "function"
+          (-> v meta :dynamic) "dynamic"
+          (-> v meta :test)    "test"
+          (string? vd) "string"
+          (vector? vd) "vector"
+          (map? vd) "map"
+          (list? vd) "list"
+          (number? vd) "number"
+          ({true 1 false 1} vd) "bool"
+          (nil? vd) "nil"
+
+         :otherwise "var"
+         )))
 
 (defn process-var [v]
   [(format "## _%s_ *%s* " (var->type v) (-> v meta :name))
@@ -101,7 +109,7 @@
    "__namespaces:__"
    (for [ns bib]
      [(link (:ns ns) (str (:ns ns) ".md"))
-      (str \tab (words
+      (str " " (words
                  (for [[k v]
                        (ns-publics (the-ns (:ns ns)))] (str k))))])
    ]
