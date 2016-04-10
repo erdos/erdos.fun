@@ -117,20 +117,21 @@
 ;; todo: finish this. add event handlers
 (defmacro defatom=
   "Define a var as an atom. Reloads atom value when one of the dereffed atoms change. Beware not to make circular references."
-  [name expr]
-  (let [expr (safe-macroexpand-all expr)
-        expr (tree-seq
-              (fnx (and (coll? x) (not (quote? x))))
-              seq expr)
-        expr (keep (fnx (when (and (seq? x)
-                                   (= 'clojure.core/deref (first x))
-                                   (symbol? (second x)))
-                          (second x))) expr)]
-    `(let [f# (fn [] ~expr)]
-       (def ~name (atom (f)))
-       ~@(for [e expr]
-           `(add-watch ~e :defatom
-                       (fn [_ _ _ _] (reset! ~name (f#))))))))
-
+  ([name expr]
+   `(defatom= ~name "" ~expr))
+  ([name doc expr]
+   (let [expr (safe-macroexpand-all expr)
+         expr (tree-seq
+               (fnx (and (coll? x) (not (quote? x))))
+               seq expr)
+         expr (keep (fnx (when (and (seq? x)
+                                    (= 'clojure.core/deref (first x))
+                                    (symbol? (second x)))
+                           (second x))) expr)]
+     `(let [f# (fn [] ~expr)]
+        (def ~name ~doc (atom (f)))
+        ~@(for [e expr]
+            `(add-watch ~e :defatom
+                        (fn [_ _ _ _] (reset! ~name (f#)))))))))
 
 'OK
