@@ -9,7 +9,8 @@ Currently includes:
  - `erdos.fun`: some functional programming helpers
  - `erdos.fun.docs`: generates documentation from source code
  - `erdos.fun.walk`: helps analyzing clj source code
-
+ - `erdos.fun.format`: string formatting macros
+ 
 ## Documentation
 
 Read the [erdos.fun documentation](doc/index.md) generated from the source code.
