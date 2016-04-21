@@ -129,7 +129,7 @@
                                     (symbol? (second x)))
                            (second x))) expr)]
      `(let [f# (fn [] ~expr)]
-        (def ~name ~doc (atom (f)))
+        (def ~name ~doc (atom (f#)))
         ~@(for [e expr]
             `(add-watch ~e :defatom
                         (fn [_ _ _ _] (reset! ~name (f#)))))))))
