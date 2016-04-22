@@ -119,19 +119,21 @@
   "Define a var as an atom. Reloads atom value when one of the dereffed atoms change. Beware not to make circular references."
   ([name expr]
    `(defatom= ~name "" ~expr))
-  ([name doc expr]
-   (let [expr (safe-macroexpand-all expr)
-         expr (tree-seq
-               (fnx (and (coll? x) (not (quote? x))))
-               seq expr)
+  ([name doc body]
+   (let [expr (safe-macroexpand-all body)
+         expr (tree-seq (fnx (and (coll? x) (not (quote? x)))) seq expr)
          expr (keep (fnx (when (and (seq? x)
-                                    (= 'clojure.core/deref (first x))
-                                    (symbol? (second x)))
-                           (second x))) expr)]
-     `(let [f# (fn [] ~expr)]
-        (def ~name ~doc (atom (f#)))
+                  (= 'clojure.core/deref (first x))
+                  (symbol? (second x)))
+                           (second x))) expr)
+         f (gensym)]
+     `(let [~f (fn [] ~body)]
+        (def ~name ~doc (atom (~f)))
         ~@(for [e expr]
-            `(add-watch ~e :defatom
-                        (fn [_ _ _ _] (reset! ~name (f#)))))))))
+            `(if (delay? ~e)
+               (future (reset! ~name (~f)))
+               (add-watch ~e :defatom
+                          (fn [_# _# _# _#] (reset! ~name (~f))))))))))
+
 
 'OK
