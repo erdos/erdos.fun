@@ -137,7 +137,17 @@
                               (fn [_# _# _# _#] (reset! ~name (~f))))
                    :else
                    (throw (IllegalArgumentException.
-                           (str "Unexpected deref type " ~e " of " (type ~e))))))))))
+                           (str "Unexpected deref " '~e " of type " (type ~e))))))
+        (var ~name)))))
 
+(comment
+
+
+  (defatom= a 1)
+  (defatom= b 43)
+  (defatom= c (+ @a @b))
+  @c
+
+  )
 
 'OK
