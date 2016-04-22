@@ -130,10 +130,14 @@
      `(let [~f (fn [] ~body)]
         (def ~name ~doc (atom (~f)))
         ~@(for [e expr]
-            `(if (delay? ~e)
-               (future (reset! ~name (~f)))
-               (add-watch ~e :defatom
-                          (fn [_# _# _# _#] (reset! ~name (~f))))))))))
+            `(cond (instance? clojure.lang.IBlockingDeref ~e)
+                   (future (reset! ~name (~f)))
+                   (instance? clojure.lang.IRef ~e)
+                   (add-watch ~e :defatom
+                              (fn [_# _# _# _#] (reset! ~name (~f))))
+                   :else
+                   (throw (IllegalArgumentException.
+                           (str "Unexpected deref type " ~e " of " (type ~e))))))))))
 
 
 'OK
