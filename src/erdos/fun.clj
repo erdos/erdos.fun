@@ -11,10 +11,16 @@
 
 (defn fixpt
   "Calls f(x), f(f(x)), ... until the same value is returned."
-  [f x]
-  (let [fx (f x)]
-    (if (= fx x)
-      x, (recur f fx))))
+  ([f x]
+   (let [fx (f x)]
+     (if (= fx x)
+       x, (recur f fx))))
+  ([f x limit]
+   (if (pos? limit)
+     (let [fx (f x)]
+       (if (= fx x)
+         x, (recur f fx (dec limit))))
+     (throw (new RuntimeException "Limit exceeded on fixpt")))))
 
 
 (defmacro fn-memo
@@ -84,37 +90,18 @@
   - `((partial< - 2) 5) ; => 3`"
   ([f & args] (fn [& args2] (apply f (concat args2 args)))))
 
-(comment
-
-  ;; PARALLEL
-  (def ^:dynamic *chunk-size* 256)
-  (def ^:dynamic *threads-count* (+ 2 34))
-
-  (defn pmap [f & xs] ;; TODO: implement this
-    (apply pmap f xs))
-
-
-  (defmacro pfor [bindings body]
-    `(pmap deref (for ~bindings (delay ~body))))
-
-  (defmacro pdoseq [bindings body]
-    `(doall (pfor ~bindings ~body)))
-
-  )
-
-
-(defmacro def- [name & body]
+(defmacro def-
+  "Like clojure.core/def but defines a private var."
+  [name & body]
   `(def ^:private ~name ~@body))
 
 
 (defmacro defatom
+  "Defines a var as an atom"
   ([name] `(def ~name (atom nil)))
   ([name val] `(def ~name (atom ~val)))
   ([name docs val] `(def ~name ~docs (atom ~val))))
 
-;; (defmacro atom= [expr])
-
-;; todo: finish this. add event handlers
 (defmacro defatom=
   "Define a var as an atom. Reloads atom value when one of the dereffed atoms change. Beware not to make circular references."
   ([name expr]
@@ -140,14 +127,50 @@
                            (str "Unexpected deref " '~e " of type " (type ~e))))))
         (var ~name)))))
 
-(comment
+
+(defn intern-all-str
+  "Returns a copy of input with strings interned."
+  [data]
+  (clojure.walk/postwalk
+   (fn [x] (if (string? x) (.intern ^String x) x))
+   data))
 
 
-  (defatom= a 1)
-  (defatom= b 43)
-  (defatom= c (+ @a @b))
-  @c
+(defn pmap*
+  "Like pmap but eager and does not keep input orders.
+Silently discards computations throwing exceptions. Returns same type as input"
+  [f xs & {:as opts}]
+  (assert (coll? xs))
+  (assert (fn? f))
+  (let [n       (or (:threads opts) (.availableProcessors (Runtime/getRuntime)))
+        storage (or (:storage opts) (atom (empty xs)))]
+    (assert (and (integer? n) (pos? n)))
+    (assert (instance? clojure.lang.IAtom storage))
+    (let [pool (java.util.concurrent.Executors/newFixedThreadPool n)
+          bs   (get-thread-bindings)]
+      (doseq [x xs]
+        (.submit pool ^Runnable (fn []
+                                  (push-thread-bindings bs)
+                                  (try
+                                    (swap! storage conj (f x))
+                                    (finally
+                                      (pop-thread-bindings))))))
+      (.shutdown pool)
+      (.awaitTermination pool Long/MAX_VALUE java.util.concurrent.TimeUnit/DAYS)
+      (deref storage))))
 
-  )
+(defmacro parallel
+  "Returns a vector of arguments evaluated in future objects and derefered.
+  Example: (parallel (Thread/sleep 1000) (Thread/sleep 1000))
+  => [nil nil] in about 1 second."
+  [& bodies]
+  `(mapv deref [~@(for [x bodies] (list 'clojure.core/future x))]))
+
+(defn filter-remove
+  "Returns a vector of two seq with items filtered or removed by f."
+  [f xs]
+  [(filter f xs) (remove f xs)])
+
+; (pmap* identity (range 100) :key 2)
 
 'OK

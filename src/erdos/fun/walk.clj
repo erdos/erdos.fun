@@ -130,12 +130,9 @@
 
 
 (comment
-
   ;; TODO: code walker functionality
-
   (def ^:dynamic *walk-vars* #{})
   (def ^:dynamic *walk-bindings* {})
-
   (defn walk-code-fn*)
   (defn walk-code-if)
   (defn walk-code-case)
