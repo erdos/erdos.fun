@@ -159,6 +159,7 @@ Silently discards computations throwing exceptions. Returns same type as input"
       (.awaitTermination pool Long/MAX_VALUE java.util.concurrent.TimeUnit/DAYS)
       (deref storage))))
 
+
 (defmacro parallel
   "Returns a vector of arguments evaluated in future objects and derefered.
   Example: (parallel (Thread/sleep 1000) (Thread/sleep 1000))
@@ -166,11 +167,35 @@ Silently discards computations throwing exceptions. Returns same type as input"
   [& bodies]
   `(mapv deref [~@(for [x bodies] (list 'clojure.core/future x))]))
 
+
 (defn filter-remove
   "Returns a vector of two seq with items filtered or removed by f."
   [f xs]
   [(filter f xs) (remove f xs)])
 
 ; (pmap* identity (range 100) :key 2)
+
+
+(defn indexed
+  "Creates an indexed data structure. You can access current index
+  with the .index method call."
+  ([s] (indexed s 0))
+  ([s ^long init]
+   (reify
+     clojure.lang.IndexedSeq
+     (index [_] init)
+     clojure.lang.Counted
+     (count [_] (count s))
+     clojure.lang.ISeq
+     (first [_] (first s))
+     (next [_] (indexed (next s) (inc init)))
+     (more [_] (indexed (.more (seq s)) (inc init)))
+     (cons [_ x] (indexed (cons x s) init))
+     (empty [_] (indexed (empty s) 0))
+     (equiv [this that] (= that s))
+     (seq [this] this)
+     clojure.lang.Sequential
+     )))
+
 
 'OK
