@@ -188,14 +188,14 @@ Silently discards computations throwing exceptions. Returns same type as input"
      (count [_] (count s))
      clojure.lang.ISeq
      (first [_] (first s))
-     (next [_] (indexed (next s) (inc init)))
+     (next [_] (if-let [n (next s)]
+                 (indexed n (inc init))))
      (more [_] (indexed (.more (seq s)) (inc init)))
      (cons [_ x] (indexed (cons x s) init))
      (empty [_] (indexed (empty s) 0))
      (equiv [this that] (= that s))
-     (seq [this] this)
+     (seq [this] (if (seq s) this))
      clojure.lang.Sequential
      )))
-
 
 'OK
