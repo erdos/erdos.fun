@@ -175,6 +175,27 @@ Silently discards computations throwing exceptions. Returns same type as input"
 
 ; (pmap* identity (range 100) :key 2)
 
+(defn build-index-store
+  "Returns tuple of memoized [value->key key->value] functions."
+  []
+  (let [a (atom {:key 0})]
+    [(fn [v]
+       (if-let [[_ k] (find (:val->key @a) v)]
+         k
+         (locking a
+           (if-let [[_ k] (find (:val->key @a) v)]
+             k
+             (let [da @a
+                   k (inc (:key da 0))]
+               (reset! a
+                       {:val->key (assoc (:val->key da) v k)
+                        :key k
+                        :key->val (assoc (:key->val da) k v)}))))))
+     (fn [key]
+       (if-let [[_ v] (find (:key->val @a) key)]
+         v
+         (throw (IllegalStateException.
+                 (str "No value found for key: " key)))))]))
 
 (defn indexed
   "Creates an indexed data structure. You can access current index
@@ -197,5 +218,21 @@ Silently discards computations throwing exceptions. Returns same type as input"
      (seq [this] (if (seq s) this))
      clojure.lang.Sequential
      )))
+
+(defn update-in'
+  "A faster implementation of update-in."
+  [original path fun]
+  (let [n  ^int (count path)
+        a ^:objects (object-array n)
+        last (loop [i 0, obj original]
+               (if (< i n)
+                 (do (aset a i obj)
+                     (recur (inc i) (get obj (nth path i))))
+                 (fun obj)))]
+    (loop [i (dec n), obj last]
+      (if (neg? i)
+        obj
+        (recur (dec i) (assoc (aget a i) (nth path i) obj))))))
+
 
 'OK
